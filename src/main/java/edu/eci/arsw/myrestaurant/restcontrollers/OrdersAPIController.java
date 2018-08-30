@@ -30,10 +30,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -47,13 +44,22 @@ public class OrdersAPIController {
     private RestaurantOrderServices ros;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<?> manejadorGetRecursoOrdersAPI(){
+    public ResponseEntity<?> handlerGetResourceOrders(){
         try {
-            //obtener datos que se enviarán a través del API
-            return new ResponseEntity<>(ros.getTablesWithOrders(),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(ros.getOrders(),HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Error bla bla bla",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No order was found",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{TableID}")
+    public ResponseEntity<?> handlerGetResourceTableOrders(@PathVariable int TableID){
+        try {
+            return new ResponseEntity<>(ros.getTableOrder(TableID),HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("No order was found in that table",HttpStatus.NOT_FOUND);
         }
     }
 

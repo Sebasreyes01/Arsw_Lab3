@@ -7,6 +7,9 @@ package edu.eci.arsw.myrestaurant.services;
 
 import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,6 +17,8 @@ import java.util.Set;
  * @author hcadavid
  */
 public interface RestaurantOrderServices {
+
+    List<Order> getOrders();
 
     void addNewOrderToTable(Order o) throws OrderServicesException;
 

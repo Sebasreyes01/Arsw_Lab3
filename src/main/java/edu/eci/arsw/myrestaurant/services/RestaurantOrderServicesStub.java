@@ -8,6 +8,8 @@ import edu.eci.arsw.myrestaurant.model.ProductType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,6 +53,15 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
     @Override
     public Set<Integer> getTablesWithOrders() {
         return tableOrders.keySet();
+    }
+
+    @Override
+    public List<Order> getOrders() {
+        ArrayList<Order> orders = new ArrayList<Order>();
+        for(Integer i : getTablesWithOrders()) {
+            orders.add(getTableOrder(i));
+        }
+        return orders;
     }
 
     @Override
