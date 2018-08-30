@@ -63,5 +63,17 @@ public class OrdersAPIController {
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> handlerPostResourceNewOrder(@RequestBody Order o){
+        try {
+            ros.addNewOrderToTable(o);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Can't add that order",HttpStatus.FORBIDDEN);
+        }
+
+    }
+
 
 }
