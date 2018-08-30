@@ -21,7 +21,10 @@ import edu.eci.arsw.myrestaurant.model.ProductType;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.services.RestaurantOrderServices;
 import edu.eci.arsw.myrestaurant.services.RestaurantOrderServicesStub;
+
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -53,10 +56,20 @@ public class OrdersAPIController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/{TableID}")
-    public ResponseEntity<?> handlerGetResourceTableOrders(@PathVariable int TableID){
+    @RequestMapping(method = RequestMethod.GET, path = "/{tableID}")
+    public ResponseEntity<?> handlerGetResourceTableOrders(@PathVariable int tableID){
         try {
-            return new ResponseEntity<>(ros.getTableOrder(TableID),HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(ros.getTableOrder(tableID),HttpStatus.ACCEPTED);
+        } catch (Exception ex) {
+            Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("No order was found in that table",HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{tableID}/total")
+    public ResponseEntity<?> handlerGetResourceOrderTotal(@PathVariable int tableID){
+        try {
+            return new ResponseEntity<>(ros.calculateTableBill(tableID),HttpStatus.ACCEPTED);
         } catch (Exception ex) {
             Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>("No order was found in that table",HttpStatus.NOT_FOUND);
@@ -75,5 +88,17 @@ public class OrdersAPIController {
 
     }
 
+    @RequestMapping(method = RequestMethod.PUT)
+    public ResponseEntity<?> handlerPutResourceNewProduct(@RequestBody Order o){
+        try {
+
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception ex) {
+            Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Can't add that order",HttpStatus.FORBIDDEN);
+        }
+
+    }
 
 }
