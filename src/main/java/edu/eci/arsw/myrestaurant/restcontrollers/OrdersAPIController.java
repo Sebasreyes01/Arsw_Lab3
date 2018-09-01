@@ -89,14 +89,28 @@ public class OrdersAPIController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<?> handlerPutResourceNewProduct(@RequestBody Order o){
+    public ResponseEntity<?> handlerPutResourceNewProduct(@RequestBody Order o) {
         try {
-
-
+            int table = o.getTableNumber();
+            for(String d : o.getOrderedDishes()) {
+                ros.getTableOrder(table).addDish(d,o.getDishOrderedAmount(d));
+            }
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception ex) {
             Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
-            return new ResponseEntity<>("Can't add that order",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Can't add that products to the order",HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = "/{tableID}")
+    public ResponseEntity<?> handlerDeleteResourceOrder(@PathVariable int tableID) {
+        try {
+            ros.releaseTable(tableID);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            Logger.getLogger(OrdersAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Can't delete the order",HttpStatus.FORBIDDEN);
         }
 
     }

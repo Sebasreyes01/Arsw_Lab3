@@ -1,0 +1,3 @@
+Los errores que se podrian derivar son debido a una condición de carrera sobre las ordenes ya que al poderse cada cliente conectar al mismo tiempo,
+puede ocurrir que se modifique de alguna forma una orden mientras otra persona la esta consultando o modificando lo que resultaria en errores en las
+ordenes con respecto al total, los productos, etc.
